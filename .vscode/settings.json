@@ -1,0 +1,6 @@
+{
+    "standard.autoFixOnSave": true,
+    "standard.validate": [
+        "javascript"
+    ]
+}

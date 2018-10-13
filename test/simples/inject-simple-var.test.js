@@ -1,0 +1,32 @@
+const expect = require('chai').assert
+const CDI = require('../../src/')
+
+describe('Simples inject variable', function () {
+  before(function () {
+    this.cdiClass = new CDI()
+
+    this.target = this.cdiClass.configure({})
+
+    this.target.fn = async ({ _var1 }) => {
+      return new Promise((resolve, reject) => {
+        return resolve(_var1)
+      })
+    }
+  })
+  it('should isntance of CDI', function () {
+    expect.instanceOf(this.cdiClass, CDI)
+  })
+
+  it('should pass _var1 and response', async function () {
+    expect.equal(await this.target.fn({ _var1: 'test1' }), 'test1')
+  })
+
+  it('should throw error because accept one argument', async function () {
+    try {
+      await this.target.fn({ _var1: 'test1' }, 'second argument')
+      throw new Error('test')
+    } catch (err) {
+      expect.equal(err.message, 'only 1 argument of object type is allowed')
+    }
+  })
+})
