@@ -22,7 +22,7 @@ const cdi = new CDI()
 
 const _module = cdi.configure({})
 
-_module.fn = async ({ _var1 }) => {
+_module.fn = ({ _var1 }) => {
     return new Promise((resolve, reject) => {
         return resolve(_var1)
     })
@@ -40,15 +40,11 @@ const CDI = require('cdi-node')
 
 const cdi = new CDI()
 
-cdi.addInterceptor('_var1', async (args) => {
-    return args._var1 + '_interceptor'
-})
-
 const _module = cdi.configure({})
 
 _module.context = '_context'
 
-_module.fn = async ({ _var1 }) => {
+_module.fn = ({ _var1 }) => {
     return new Promise((resolve, reject) => {
         return resolve(_var1 + this.context)
     })
@@ -72,7 +68,7 @@ cdi.addInterceptor('_var1', async (args) => {
 
 const _module = cdi.configure({})
 
-_module.fn = async ({ _var1 }) => {
+_module.fn = ({ _var1 }) => {
     return new Promise((resolve, reject) => {
         return resolve(_var1)
     })
