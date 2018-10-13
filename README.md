@@ -1,4 +1,6 @@
-# cdi-node ![CI status](https://travis-ci.org/willguitaradmfar/cdi-node.svg?branch=master)
+# cdi-node 
+
+[![Build Status](https://travis-ci.org/willguitaradmfar/cdi-node.svg?branch=master)](https://travis-ci.org/willguitaradmfar/cdi-node)
 
 Library that assists in dependency management.
 
