@@ -13,7 +13,7 @@ describe('Simples inject variable', function () {
       })
     }
   })
-  it('should isntance of CDI', function () {
+  it('should instance of CDI', function () {
     expect.instanceOf(this.cdiClass, CDI)
   })
 
