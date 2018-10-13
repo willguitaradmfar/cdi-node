@@ -1,4 +1,4 @@
-# cdi-node ![CI status](https://img.shields.io/badge/build-passing-brightgreen.svg)
+# cdi-node ![CI status](https://travis-ci.org/willguitaradmfar/cdi-node.svg?branch=master)
 
 Library that assists in dependency management.
 
