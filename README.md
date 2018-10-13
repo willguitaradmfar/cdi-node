@@ -7,7 +7,7 @@ Library that assists in dependency management.
 ## Installation
 
 ### Requirements
-* NodeJS
+* NodeJS 8+
 
 `$ npm i cdi-node`
 
