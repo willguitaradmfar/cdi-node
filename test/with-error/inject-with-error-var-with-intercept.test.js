@@ -22,11 +22,12 @@ describe('throw error normal and Interceptor', function () {
   })
 
   it('should pass _var1 undefined and response with interceptor', async function () {
-    this.cdiClass.addInterceptorVariable('_var1', async (fnName, args) => {
+    this.cdiClass.addInterceptorVariable('_var1', (fnName, args) => {
       throw new Error(`error from interceptor`)
     })
     try {
-      await this.target.fn({ _var1: 'test222' })
+      await this.target.fn()
+      throw new Error()
     } catch (err) {
       expect.equal(err.message, 'error from interceptor')
     }

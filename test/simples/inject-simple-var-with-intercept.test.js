@@ -6,7 +6,7 @@ describe('Simples inject variable with intercept', function () {
     this.cdiClass = new CDI()
 
     this.cdiClass.addInterceptorVariable('_var1', async (fnName, args) => {
-      return args._var1 ? args._var1 + '_interceptor' : '_interceptor'
+      return args && args._var1 ? args._var1 + '_interceptor' : '_interceptor'
     })
 
     this.target = this.cdiClass.configure({})
@@ -23,6 +23,6 @@ describe('Simples inject variable with intercept', function () {
   })
 
   it('should pass _var1 undefined and response with interceptor', async function () {
-    expect.isUndefined(await this.target.fn())
+    expect.equal(await this.target.fn(), '_interceptor')
   })
 })

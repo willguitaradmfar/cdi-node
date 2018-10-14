@@ -42,20 +42,24 @@ module.exports = class CDI {
 
             if (arg && arg.constructor !== {}.constructor) throw new Error(`only 1 argument of object type is allowed`)
 
-            const resolveInterceptor = {}
-            for (let _var in arg) {
-              if (this.interceptorsVariable && this.interceptorsVariable[_var]) {
-                resolveInterceptor[_var] = await this.interceptorsVariable[_var](prop, arg)
-              } else {
-                resolveInterceptor[_var] = arg[_var]
+            const resolveInterceptor = new Proxy({
+              ...arg,
+              ...this.interceptorsVariable
+            }, {
+              get: (_obj, _prop) => {
+                if (!_obj[_prop]) return
+
+                if (typeof _obj[_prop] === 'function') return this.interceptorsVariable[_prop](prop, arg)
+
+                return _obj[_prop]
               }
-            }
+            })
+            // for (let _var in this.interceptorsVariable) {
+            //   resolveInterceptor[_var] = await this.interceptorsVariable[_var](prop, arg)
+            // }
 
             try {
-              const response = await obj[prop].call(ctx, {
-                ...arg,
-                ...resolveInterceptor
-              })
+              const response = await obj[prop].call(ctx, resolveInterceptor)
 
               if (this.interceptorDone) {
                 return this.interceptorDone(response, prop, arg)

@@ -30,7 +30,7 @@ describe('Catchs inject variable with intercept', function () {
   before(function () {
     this.target = new Controller()
 
-    this.target.fn = async ({ _var1 }) => {
+    this.target.fn = async () => {
       throw new Error(`capture error catch interceptor`)
     }
   })
