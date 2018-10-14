@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/willguitaradmfar/cdi-node.svg?branch=master)](https://travis-ci.org/willguitaradmfar/cdi-node)
 
+[![Coverage Status](https://coveralls.io/repos/github/willguitaradmfar/cdi-node/badge.svg?branch=master)](https://coveralls.io/github/willguitaradmfar/cdi-node?branch=master)
+
 Library that assists in dependency management.
 
 ## Installation
