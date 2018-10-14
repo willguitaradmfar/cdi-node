@@ -18,11 +18,11 @@ describe('Simples inject variable with intercept', function () {
     }
   })
 
-  it('should pass _var1 and response with interceotpr', async function () {
+  it('should pass _var1 and response with interceptor', async function () {
     expect.equal(await this.target.fn({ _var1: 'test222' }), 'test222_interceptor')
   })
 
-  it('should pass _var1 undefined and response with interceotpr', async function () {
+  it('should pass _var1 undefined and response with interceptor', async function () {
     expect.equal(await this.target.fn({ }), '_interceptor')
   })
 })
