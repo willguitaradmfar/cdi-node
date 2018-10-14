@@ -53,6 +53,36 @@
             "args": [
                 "test/with-error/inject-with-error-var-with-intercept.test.js"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test test/class/inject-class-var.test.js",
+            "console": "integratedTerminal",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/mocha",
+            "args": [
+                "test/class/inject-class-var.test.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test test/class/inject-class-var-with-intercept.test.js",
+            "console": "integratedTerminal",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/mocha",
+            "args": [
+                "test/class/inject-class-var-with-intercept.test.js"
+            ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test test/class/inject-class-with-context.test.js",
+            "console": "integratedTerminal",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/mocha",
+            "args": [
+                "test/class/inject-class-with-context.test.js"
+            ]
         }
     ]
 }

@@ -2,7 +2,8 @@ module.exports = class CDI {
   configure (target) {
     this.target = target
     if (!this.target) throw new Error('was missing the variable "target"')
-    return new Proxy(target, this.handler())
+    this.proxy = new Proxy(target, this.handler())
+    return this.proxy
   }
 
   addInterceptor (variable, fn) {
@@ -13,7 +14,7 @@ module.exports = class CDI {
   handler () {
     return {
       get: (obj, prop) => {
-        const ctx = this.target
+        const ctx = this.proxy
 
         if (typeof obj[prop] !== 'function') { return obj[prop] }
 
