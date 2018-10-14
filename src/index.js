@@ -30,6 +30,8 @@ module.exports = class CDI {
       get: (obj, prop) => {
         const ctx = this.proxy
 
+        if (!obj[prop]) throw new Error('Property not found')
+
         if (typeof obj[prop] !== 'function') { return obj[prop] }
 
         if (typeof obj[prop] === 'function') {
@@ -64,8 +66,6 @@ module.exports = class CDI {
             }
           }
         }
-
-        throw new Error('Property not found')
       }
     }
   }
