@@ -5,8 +5,12 @@ class Controller {
   constructor () {
     const cdi = new CDI()
 
-    cdi.addInterceptor('_var1', async (args) => {
+    cdi.addInterceptorVariable('_var1', async (args) => {
       return args._var1 ? args._var1 + '_interceptor' : '_interceptor'
+    })
+
+    cdi.addInterceptorVariable('_notexitst', async (args) => {
+      return '_notexitst'
     })
 
     const _module = cdi.configure({})

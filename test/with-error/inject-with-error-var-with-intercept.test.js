@@ -21,7 +21,7 @@ describe('throw error normal and Interceptor', function () {
   })
 
   it('should pass _var1 undefined and response with interceptor', async function () {
-    this.cdiClass.addInterceptor('_var1', async (args) => {
+    this.cdiClass.addInterceptorVariable('_var1', async (args) => {
       throw new Error(`error from interceptor`)
     })
     try {

@@ -6,9 +6,14 @@ module.exports = class CDI {
     return this.proxy
   }
 
-  addInterceptor (variable, fn) {
-    this.interceptors = this.interceptors || {}
-    this.interceptors[variable] = fn
+  addInterceptorVariable (variable, fn) {
+    this.interceptorsVariable = this.interceptorsVariable || {}
+    this.interceptorsVariable[variable] = fn
+  }
+
+  addInterceptorsCatch (fnName, fn) {
+    this.interceptorsCatch = this.interceptorsCatch || {}
+    this.interceptorsCatch[fnName] = fn
   }
 
   handler () {
@@ -27,14 +32,21 @@ module.exports = class CDI {
             if (arg && arg.constructor !== {}.constructor) throw new Error(`only 1 argument of object type is allowed`)
 
             const resolveInterceptor = {}
-            for (let _var in this.interceptors) {
-              resolveInterceptor[_var] = await this.interceptors[_var](arg)
+            for (let _var in this.interceptorsVariable) {
+              resolveInterceptor[_var] = await this.interceptorsVariable[_var](arg)
             }
 
-            return obj[prop].call(ctx, {
-              ...arg,
-              ...resolveInterceptor
-            })
+            try {
+              return await obj[prop].call(ctx, {
+                ...arg,
+                ...resolveInterceptor
+              })
+            } catch (err) {
+              if (this.interceptorsCatch && this.interceptorsCatch[prop]) {
+                return this.interceptorsCatch[prop](err, arg)
+              }
+              throw err
+            }
           }
         }
 

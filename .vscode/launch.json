@@ -83,6 +83,16 @@
             "args": [
                 "test/class/inject-class-with-context.test.js"
             ]
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Test test/catchs/inject-catchs-var-with-intercept.test.js",
+            "console": "integratedTerminal",
+            "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/mocha",
+            "args": [
+                "test/catchs/inject-catchs-var-with-intercept.test.js"
+            ]
         }
     ]
 }

@@ -62,7 +62,7 @@ const CDI = require('cdi-node')
 
 const cdi = new CDI()
 
-cdi.addInterceptor('_var1', async (args) => {
+cdi.addInterceptorVariable('_var1', async (args) => {
     return args._var1 + '_interceptor'
 })
 
