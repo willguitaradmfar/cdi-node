@@ -43,8 +43,12 @@ module.exports = class CDI {
             if (arg && arg.constructor !== {}.constructor) throw new Error(`only 1 argument of object type is allowed`)
 
             const resolveInterceptor = {}
-            for (let _var in this.interceptorsVariable) {
-              resolveInterceptor[_var] = await this.interceptorsVariable[_var](prop, arg)
+            for (let _var in arg) {
+              if (this.interceptorsVariable && this.interceptorsVariable[_var]) {
+                resolveInterceptor[_var] = await this.interceptorsVariable[_var](prop, arg)
+              } else {
+                resolveInterceptor[_var] = arg[_var]
+              }
             }
 
             try {

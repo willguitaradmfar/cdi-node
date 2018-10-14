@@ -23,7 +23,7 @@ describe('Class inject variable with intercept', function () {
   before(function () {
     this.target = new Controller()
 
-    this.target.fn = async ({ _var1 }) => {
+    this.target.fn = async ({ _var1, _var2 }) => {
       return new Promise((resolve, reject) => {
         return resolve(_var1)
       })
@@ -35,6 +35,6 @@ describe('Class inject variable with intercept', function () {
   })
 
   it('should pass _var1 undefined and response with interceptor', async function () {
-    expect.equal(await this.target.fn({ }), '_interceptor')
+    expect.isUndefined(await this.target.fn())
   })
 })
