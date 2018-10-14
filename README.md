@@ -28,7 +28,7 @@ _module.fn = ({ _var1 }) => {
     })
 }
 
-await _module({ _var1: 'test' })
+const response = await _module.fn({ _var1: 'test' })
 // response: 'test'
 
 ```
@@ -50,19 +50,19 @@ _module.fn = ({ _var1 }) => {
     })
 }
 
-await _module({ _var1: 'test' })
+const response = await _module.fn({ _var1: 'test' })
 // response: 'test_context'
 
 ```
 
-### Simple with interceptor
+### Simple with interceptor variable
 
 ```js
 const CDI = require('cdi-node')
 
 const cdi = new CDI()
 
-cdi.addInterceptorVariable('_var1', async (args) => {
+cdi.addInterceptorVariable('_var1', async (fnName, args) => {
     return args._var1 + '_interceptor'
 })
 
@@ -74,8 +74,77 @@ _module.fn = ({ _var1 }) => {
     })
 }
 
-await _module({ _var1: 'test' })
+const response = await _module.fn({ _var1: 'test' })
 // response: 'test_interceptor'
+
+```
+
+### Simple with interceptor catch error
+
+```js
+const CDI = require('cdi-node')
+
+const cdi = new CDI()
+
+cdi.setInterceptorCatch(async (err, fnName, args) => {
+    if (args && args._var1) {
+        return err.message + ' + effect + ' + fnName
+    }
+
+    throw err
+})
+
+const _module = cdi.configure({})
+
+_module.fn = ({ _var1 }) => {
+    throw new Error('error test')
+}
+
+const response = await _module.fn({ _var1: 'test' })
+// response: 'error test + effect + fn'
+try{
+    await _module.fn()
+}catch(err){
+    // err.messge: 'error test'
+}
+
+
+```
+
+
+### Simple with interceptor Done
+
+```js
+const CDI = require('cdi-node')
+
+const cdi = new CDI()
+
+cdi.setInterceptorDone(async (response, fnName, args) => {
+    if (response === 'done') {
+        return response + ' + ' + fnName
+    }
+
+    throw new Error(response)
+})
+
+const _module = cdi.configure({})
+
+_module.fn = ({ _var1 }) => {
+    return 'done'
+}
+
+_module._fn = ({ _var1 }) => {
+    return 'error'
+}
+
+const response = await _module.fn({ _var1: 'test' })
+// response: 'done + fn'
+try{
+    await _module._fn()
+}catch(err){
+    // err.messge: 'error'
+}
+
 
 ```
 

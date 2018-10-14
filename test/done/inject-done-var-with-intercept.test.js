@@ -9,15 +9,15 @@ class Controller {
     _cdi = cdi
 
     cdi.addInterceptorVariable('_var1', async (fnName, args) => {
-      return args && args._var1 ? args._var1 + '_interceptor' : '_interceptor'
+      return args._var1 ? args._var1 + '_interceptor' : '_interceptor'
     })
 
-    cdi.setInterceptorCatch(async (err, fnName, args) => {
-      if (args && args._var1) {
-        return err.message + ' + effect + ' + fnName
+    cdi.setInterceptorDone(async (response, fnName, args) => {
+      if (response === 'done') {
+        return response + ' + ' + fnName
       }
 
-      throw err
+      throw new Error(response)
     })
 
     const _module = cdi.configure({})
@@ -31,37 +31,38 @@ describe('Catchs inject variable with intercept', function () {
     this.target = new Controller()
 
     this.target.fn = async ({ _var1 }) => {
-      throw new Error(`capture error catch interceptor`)
+      return 'done'
+    }
+
+    this.target._fn = async ({ _var1 }) => {
+      return 'error'
     }
   })
 
   it('should pass message error with concatened effect of interceptor', async function () {
-    expect.equal(await this.target.fn({ _var1: 'test222' }), 'capture error catch interceptor + effect + fn')
+    expect.equal(await this.target.fn({ _var1: 'test222' }), 'done + fn')
   })
 
   it('should catch error because rethrow error', async function () {
     try {
-      await this.target.fn()
-
+      await this.target._fn({ })
       throw new Error()
     } catch (err) {
-      expect.equal(err.message, 'capture error catch interceptor')
+      expect.equal(err.message, 'error')
     }
   })
 
-  it('should catch error because reset Catch function', async function () {
+  it('should catch error because reset Done function', async function () {
     try {
-      _cdi.setInterceptorCatch(async (err, args) => {
+      _cdi.setInterceptorDone(async (err, args) => {
         if (args._var1) {
           return err.message + ' + effect'
         }
 
         throw err
       })
-
-      throw new Error()
     } catch (err) {
-      expect.equal(err.message, 'already exists a configured Error Interceptor')
+      expect.equal(err.message, 'already exists a configured Done Interceptor')
     }
   })
 })

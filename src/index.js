@@ -11,9 +11,18 @@ module.exports = class CDI {
     this.interceptorsVariable[variable] = fn
   }
 
-  addInterceptorsCatch (fnName, fn) {
-    this.interceptorsCatch = this.interceptorsCatch || {}
-    this.interceptorsCatch[fnName] = fn
+  setInterceptorCatch (fn) {
+    if (this.interceptorCatch) {
+      throw new Error(`already exists a configured Error Interceptor`)
+    }
+    this.interceptorCatch = fn
+  }
+
+  setInterceptorDone (fn) {
+    if (this.interceptorDone) {
+      throw new Error(`already exists a configured Done Interceptor`)
+    }
+    this.interceptorDone = fn
   }
 
   handler () {
@@ -33,17 +42,23 @@ module.exports = class CDI {
 
             const resolveInterceptor = {}
             for (let _var in this.interceptorsVariable) {
-              resolveInterceptor[_var] = await this.interceptorsVariable[_var](arg)
+              resolveInterceptor[_var] = await this.interceptorsVariable[_var](prop, arg)
             }
 
             try {
-              return await obj[prop].call(ctx, {
+              const response = await obj[prop].call(ctx, {
                 ...arg,
                 ...resolveInterceptor
               })
+
+              if (this.interceptorDone) {
+                return this.interceptorDone(response, prop, arg)
+              }
+
+              return response
             } catch (err) {
-              if (this.interceptorsCatch && this.interceptorsCatch[prop]) {
-                return this.interceptorsCatch[prop](err, arg)
+              if (this.interceptorCatch) {
+                return this.interceptorCatch(err, prop, arg)
               }
               throw err
             }

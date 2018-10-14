@@ -5,7 +5,7 @@ describe('Simples inject variable with intercept', function () {
   before(function () {
     this.cdiClass = new CDI()
 
-    this.cdiClass.addInterceptorVariable('_var1', async (args) => {
+    this.cdiClass.addInterceptorVariable('_var1', async (fnName, args) => {
       return args._var1 ? args._var1 + '_interceptor' : '_interceptor'
     })
 
