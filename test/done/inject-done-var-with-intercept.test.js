@@ -26,7 +26,7 @@ class Controller {
   }
 }
 
-describe('Catchs inject variable with intercept', function () {
+describe('Done inject variable with intercept', function () {
   before(function () {
     this.target = new Controller()
 
