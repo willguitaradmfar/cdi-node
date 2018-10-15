@@ -35,7 +35,7 @@ describe('Simples inject variable', function () {
       await this.target.fn_notexists({ _var1: 'test1' })
       throw new Error('test')
     } catch (err) {
-      expect.equal(err.message, 'Property not found')
+      expect.equal(err.message, 'this.target.fn_notexists is not a function')
     }
   })
 
