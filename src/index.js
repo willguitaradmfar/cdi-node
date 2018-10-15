@@ -49,7 +49,7 @@ module.exports = class CDI {
               get: (_obj, _prop) => {
                 if (!_obj[_prop]) return
 
-                if (typeof _obj[_prop] === 'function') return this.interceptorsVariable[_prop](prop, arg)
+                if (typeof _obj[_prop] === 'function') return this.interceptorsVariable[_prop].call(ctx, prop, arg)
 
                 return _obj[_prop]
               }
@@ -62,13 +62,13 @@ module.exports = class CDI {
               const response = await obj[prop].call(ctx, resolveInterceptor)
 
               if (this.interceptorDone) {
-                return this.interceptorDone(response, prop, arg)
+                return this.interceptorDone.call(ctx, response, prop, arg)
               }
 
               return response
             } catch (err) {
               if (this.interceptorCatch) {
-                return this.interceptorCatch(err, prop, arg)
+                return this.interceptorCatch.call(ctx, err, prop, arg)
               }
               throw err
             }
