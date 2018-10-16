@@ -54,9 +54,6 @@ module.exports = class CDI {
                 return _obj[_prop]
               }
             })
-            // for (let _var in this.interceptorsVariable) {
-            //   resolveInterceptor[_var] = await this.interceptorsVariable[_var](prop, arg)
-            // }
 
             try {
               const response = await obj[prop].call(ctx, resolveInterceptor)
